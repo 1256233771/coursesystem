@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.swpu.coursesystem.mapper.TeacherMapper">
+    <resultMap id="TeachResultMap" type="com.swpu.coursesystem.entity.Teach">
+        <id column="teacherId" property="teacherId"/>
+        <id column="courseId" property="courseId"/>
+    </resultMap>
+    <insert id="addTeach" parameterType="com.swpu.coursesystem.entity.Teach">
+        INSERT INTO teach(teacherId,courseId) VALUES (#{teacherId},#{courseId})
+    </insert>
+    <delete id="deleteTeach" parameterType="com.swpu.coursesystem.entity.Teach">
+        DELETE FROM teach WHERE teacherId=#{teacherId} AND courseId=#{courseId}
+    </delete>
+    <delete id="deleteByTeacherId" parameterType="java.lang.String">
+        DELETE FROM teach WHERE teacherId=#{teacherId}
+    </delete>
+    <delete id="deleteByCourseId" parameterType="java.lang.String">
+        DELETE FROM teach WHERE courseId=#{courseId}
+    </delete>
+    <!--不用做查询,只用于检测数据是否存在-->
+    <select id="getByTeacherIdAndCourseId" resultMap="TeachResultMap" parameterType="java.lang.String">
+        SELECT * FROM teach WHERE teacherId=#{param1} AND courseId=#{param2}
+    </select>
+    <select id="getTeacherIds" resultMap="TeachResultMap" parameterType="java.lang.String">
+        SELECT teacherId FROM teach WHERE courseId=#{courseId}
+    </select>
+    <select id="getCourseIds" resultMap="TeachResultMap" parameterType="java.lang.String">
+        SELECT courseId FROM teach WHERE teacherId=#{teacherId}
+    </select>
+
+</mapper>

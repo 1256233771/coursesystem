@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.swpu.coursesystem.mapper.MajorMapper">
+    <resultMap id="MajorResultMap" type="com.swpu.coursesystem.entity.Major">
+        <id column="majorId" property="majorId"/>
+        <result column="majorName" property="majorName"/>
+        <result column="totalStuNum" property="totalStuNum"/>
+    </resultMap>
+    <insert id="addMajor" parameterType="com.swpu.coursesystem.entity.Major">
+        INSERT INTO major(majorId,majorName,totalStuNum)
+        VALUES (#{majorId},#{majorName},#{totalStuNum})
+    </insert>
+    <delete id="deleteMajor" parameterType="java.lang.String">
+        DELETE FROM major WHERE majorId=#{majorId}
+    </delete>
+    <select id="getAllMajor" resultMap="MajorResultMap">
+        SELECT * FROM major
+    </select>
+    <select id="getMajor" resultMap="MajorResultMap" parameterType="java.lang.String">
+        SELECT * FROM major WHERE majorId=#{majorId}
+    </select>
+    <update id="updateMajor" parameterType="com.swpu.coursesystem.entity.Major">
+        UPDATE major SET majorName=#{majorName},totalStuNum=#{totalStuNum} WHERE majorId=#{majorId}
+    </update>
+</mapper>

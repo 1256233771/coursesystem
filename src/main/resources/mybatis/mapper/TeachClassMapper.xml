@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.swpu.coursesystem.mapper.TeachClassMapper">
+    <resultMap id="TeachClassResultMap" type="com.swpu.coursesystem.entity.TeachClass">
+        <id column="classId" property="classId"/>
+        <result column="grade" property="grade"/>
+        <result column="stuNumber" property="stuNumber"/>
+        <result column="teacherId" property="teacherId"/>
+        <result column="courseId" property="courseId"/>
+        <result column="majorId" property="majorId"/>
+        <result column="teachDate" property="teachDate"/>
+    </resultMap>
+    <insert id="addTeachClass" parameterType="com.swpu.coursesystem.entity.TeachClass">
+        INSERT INTO teachClass(classId,grade,stuNumber,teacherId,courseId,majorId,teachDate)
+        VALUES (#{classId},#{grade},#{stuNumber},#{teacherId},#{courseId},#{majorId},#{teachDate})
+    </insert>
+    <delete id="deleteTeachClass" parameterType="java.lang.String">
+        DELETE FROM teachClass WHERE classId=#{classId}
+    </delete>
+    <delete id="deleteTeachClassByTeacherId" parameterType="java.lang.String">
+        DELETE FROM teachClass WHERE teacherId=#{teacherId}
+    </delete>
+    <delete id="deleteTeachClassByCourseId" parameterType="java.lang.String">
+        DELETE FROM teachClass WHERE courseId=#{courseId}
+    </delete>
+    <select id="getTeachClassByRandom" resultMap="TeachClassResultMap">
+        select * from
+        <where>
+            <if test="grade!=null">
+                and grade=#{param1}
+            </if>
+            <if test="teacherId!=null">
+                and teacherId=#{param2}
+            </if>
+            <if test="courseId!=null">
+                and courseId=#{param3}
+            </if>
+            <if test="majorId!=null">
+                and majorId=#{param4}
+            </if>
+            <if test="startTime!=null">
+                and teachDate&gt;=#{param5}
+            </if>
+            <if test="endTime!=null">
+                and teachDate&lt;=#{param6}
+            </if>
+        </where>
+    </select>
+    <select id="getAllTeachClass" resultMap="TeachClassResultMap">
+        select * from teachClass
+    </select>
+    <select id="getTeachClass" resultMap="TeachClassResultMap" parameterType="java.lang.String">
+        SELECT * FROM teachClass WHERE classId=#{classId}
+    </select>
+    <select id="getTeachClassByTeacherId" resultMap="TeachClassResultMap" parameterType="java.lang.String">
+        SELECT * FROM teachClass WHERE teacherId=#{teacherId}
+    </select>
+    <select id="getTeachClassByTeacherIdAndCourseId" resultMap="TeachClassResultMap" parameterType="java.lang.String">
+        select * from teachClass where teacherId=#{param1} and courseId=#{param2}
+    </select>
+    <select id="getTeachClassByTeacherIdAndMajorId" resultMap="TeachClassResultMap" parameterType="java.lang.String">
+        select * from teachClass where teacherId=#{param1} and majorId=#{param2}
+    </select>
+    <select id="getTeachClassByCourseId" resultMap="TeachClassResultMap" parameterType="java.lang.String">
+        SELECT * FROM teachClass WHERE courseId=#{courseId}
+    </select>
+    <select id="getTeachClassByMajorId" resultMap="TeachClassResultMap" parameterType="java.lang.String">
+        SELECT * FROM teachClass WHERE majorId=#{majorId}
+    </select>
+    <update id="updateTeachClass" parameterType="com.swpu.coursesystem.entity.TeachClass">
+        UPDATE teachClass SET grade=#{grade},stuNumber#{stuNumber},teacherId=#{teacherId},
+        courseId=#{courseId},majorId=#{majorId},teachDate=#{teachDate}
+        WHERE classId=#{classId}
+    </update>
+
+</mapper>

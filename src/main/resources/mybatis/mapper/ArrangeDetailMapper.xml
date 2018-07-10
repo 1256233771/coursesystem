@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.swpu.coursesystem.mapper.ArrangeDetailMapper">
+    <resultMap id="DetailResultMap" type="com.swpu.coursesystem.entity.ArrangeDetail">
+        <id column="detailId" property="detailId" />
+        <result column="arrangeId" property="arrangeId"/>
+        <result column="labRoomId" property="labRoomId"/>
+        <result column="week" property="week"/>
+        <result column="day" property="day"/>
+        <result column="startTime" property="startTime"/>
+        <result column="endTime" property="endTime"/>
+        <result column="detailDate" property="detailDate"/>
+    </resultMap>
+    <resultMap id="ArrangeInfoResultMap" type="com.swpu.coursesystem.entity.ArrangeInfo">
+        <id column="arrangeId" property="arrangeId"/>
+        <result column="teacherId" property="teacherId"/>
+        <result column="teachClassId" property="teachClassId"/>
+        <result column="practiceContent" property="practiceContent"/>
+        <result column="practiceCourseNum" property="practiceCourseNum"/>
+        <result column="arrangeDate" property="arrangeDate"/>
+    </resultMap>
+    <select id="getArrangeDetailByRandom" resultMap="DetailResultMap">
+        select * from arrangeDetail
+        <where>
+            <if test="param1!=null">
+                and arrangeId=#{param1}
+            </if>
+            <if test="param2!=null">
+                and labRoomId=#{param2}
+            </if>
+            <if test="param3!=null">
+                and detailDate&gt;=#{param3}
+            </if>
+            <if test="param4!=null">
+                and detailDate&lt;=#{param4}
+            </if>
+        </where>
+    </select>
+    <select id="getArrangeDetail" resultMap="DetailResultMap" parameterType="java.lang.String">
+        SELECT * FROM  arrangeDetail WHERE detailId=#{detailId}
+    </select>
+    <select id="getArrangeInfo" resultMap="ArrangeInfoResultMap" parameterType="java.lang.String">
+        SELECT arrangeInfo.arrangeId,arrangeInfo.teacherId,arrangeInfo.teachClassId,arrangeInfo.practiceContent,arrangeInfo.practiceCourseNum,arrangeInfo.arrangDate FROM
+        arrangeInfo INNER JOIN arrangeDetail ON arrangeInfo.arrangeId=arrangeDetail.arrangeId WHERE arrangeDetail.detailId=#{detailId}
+    </select>
+    <select id="getArrangeDetailByArrangeId" resultMap="DetailResultMap"  parameterType="java.lang.String">
+        SELECT * FROM  arrangeDetail WHERE arrangeId=#{arrangeId}
+    </select>
+    <select id="getArrangeDetailByRoomId" resultMap="DetailResultMap" parameterType="java.lang.Integer">
+        SELECT * FROM  arrangeDetail WHERE labRoomId=#{roomId}
+    </select>
+    <select id="countConflictTime" resultType="java.lang.Integer" parameterType="com.swpu.coursesystem.entity.ArrangeDetail">
+        select count(*) from arrangeDetail where (labRoomId=#{labRoomId} and week=#{week} and day=#{day}) and
+        ((startTime&gt;=#{startTime} and endTime&lt;=#{endTime}) or (startTime&lt;=#{startTime} and endTime&gt;=#{endTime})
+        or (startTime&gt;=#{startTime} and endTime&lt;=#{endTime}))
+    </select>
+    <insert id="addArrangeDetail" parameterType="com.swpu.coursesystem.entity.ArrangeDetail">
+        INSERT INTO
+          arrangeDetail(detailId,arrangeId,labRoomId,week,day,startTime,endTime,detailDate)
+        VALUES
+          (#{detailId},#{arrangeId},#{labRoomId},#{week},#{day},#{startTime},#{endTime},#{detailDate})
+    </insert>
+    <update id="updateArrangeDetail" parameterType="com.swpu.coursesystem.entity.ArrangeDetail">
+        UPDATE arrangeDetail SET arrangeId=#{arrangeId},lobRoomId=#{labRoomId},week=#{week},
+        day=#{day},startTime=#{startTime},endTime=#{endTime},detailDate=#{detailDate}
+        WHERE detailId=#{detailId}
+    </update>
+    <delete id="deleteArrangeDetailByTeacherId" parameterType="java.lang.String">
+        DELETE arrangeDetail FROM arrangeDetail LEFT JOIN arrangeInfo ON arrangeDetail.arrangeId=arrangeInfo.arrangeId WHERE arrangeInfo.teacherId=#{teacherId};
+    </delete>
+    <delete id="deleteArrangeDetail" parameterType="java.lang.String">
+        DELETE FROM arrangeDetail WHERE detailId=#{detailId}
+    </delete>
+    <delete id="deleteArrangeDetailByArrangeId" parameterType="java.lang.String">
+        DELETE FROM arrangeDetail WHERE arrangeId=#{arrangeId}
+    </delete>
+</mapper>

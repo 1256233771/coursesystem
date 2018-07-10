@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.swpu.coursesystem.mapper.CourseMapper">
+    <resultMap id="CourseResultMap" type="com.swpu.coursesystem.entity.Course">
+        <id column="courseId" property="courseId" />
+        <result column="courseName" property="courseName"/>
+        <result column="totalTime" property="totalTime"/>
+        <result column="practiceTime" property="practiceTime"/>
+    </resultMap>
+    <!--使用${}只能使用value和_parameter进行引用参数-->
+    <select id="getCourseByFuzzyName" resultMap="CourseResultMap" parameterType="java.lang.String">
+        select * from course where courseName like '%${value}%'
+    </select>
+    <select id="getByName" resultMap="CourseResultMap" parameterType="java.lang.String">
+        select * from course where courseName=#{courseName}
+    </select>
+    <select id="getAllCourse" resultMap="CourseResultMap">
+        select * from course
+    </select>
+    <select id="getCourse" resultMap="CourseResultMap" parameterType="java.lang.String">
+        SELECT * FROM  course WHERE courseId=#{courseId}
+    </select>
+    <insert id="addCourse" parameterType="com.swpu.coursesystem.entity.Course">
+        INSERT INTO
+          course(courseId,courseName,totalTime,practiceTime)
+        VALUES
+          (#{courseId},#{courseName},#{totalTime},#{practiceTime})
+    </insert>
+    <update id="updateCourse" parameterType="com.swpu.coursesystem.entity.Course">
+        UPDATE course SET courseName=#{courseName},totalTime=#{totalTime},piacticeTime=#{priceTime} WHERE courseId=#{courseId}
+    </update>
+    <delete id="deleteCourse" parameterType="java.lang.String">
+        DELETE FROM course WHERE courseId=#{courseId}
+    </delete>
+</mapper>

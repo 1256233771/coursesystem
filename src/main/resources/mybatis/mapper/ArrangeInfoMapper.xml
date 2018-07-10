@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.swpu.coursesystem.mapper.ArrangeInfoMapper">
+    <resultMap id="ArrangeInfoResultMap" type="com.swpu.coursesystem.entity.ArrangeInfo">
+        <id column="arrangeId" property="arrangeId"/>
+        <result column="teacherId" property="teacherId"/>
+        <result column="teachClassId" property="teachClassId"/>
+        <result column="practiceContent" property="practiceContent"/>
+        <result column="practiceCourseNum" property="practiceCourseNum"/>
+        <result column="arrangeDate" property="arrangeDate"/>
+    </resultMap>
+    <insert id="addArrangeInfo" parameterType="com.swpu.coursesystem.entity.ArrangeInfo">
+        INSERT INTO arrangeInfo(arrangeId,teacherId,teachClassId,practiceContent,practiceCourseNum,arrangeDate)
+        VALUES (#{arrangeId},#{teacherId},#{teachClassId},#{practiceContent},#{practiceCourseNum},#{arrangeDate})
+    </insert>
+    <delete id="deleteArrangeInfo" parameterType="java.lang.String">
+        DELETE FROM arrangeInfo WHERE arrangeId=#{arrangeId}
+    </delete>
+    <delete id="deleteArrangeByTeacherId" parameterType="java.lang.String">
+        DELETE FROM arrangeInfo WHERE teacherId=#{teacherId}
+    </delete>
+    <select id="getArrangeInfoByRandom" resultMap="ArrangeInfoResultMap">
+        select * from arrangeInfo
+        <where>
+            <if test="param1!=null">
+               and teacherId=#{param1}
+            </if>
+            <if test="param2!=null">
+                and classId=#{param2}
+            </if>
+            <if test="param3!=null">
+                and arrangeDate&gt;=#{param3}
+            </if>
+            <if test="param4!=null">
+                and arrangeDate&lt;=#{param4}
+            </if>
+        </where>
+    </select>
+    <select id="getAllArrangeInfo" resultMap="ArrangeInfoResultMap">
+        SELECT * FROM arrangeInfo
+    </select>
+    <select id="getArrangeByTeacherId" resultMap="ArrangeInfoResultMap" parameterType="java.lang.String">
+        SELECT * FROM arrangeInfo WHERE teacherId=#{teacherId}
+    </select>
+    <select id="getArrangeInfoByClassId" resultMap="ArrangeInfoResultMap" parameterType="java.lang.String">
+        SELECT * FROM arrangeInfo WHERE teachClassId=#{classId}
+    </select>
+    <select id="getArrangeInfo" resultMap="ArrangeInfoResultMap" parameterType="java.lang.String">
+        SELECT * FROM  arrangeInfo WHERE  arrangeId=#{arrangeId}
+    </select>
+    <update id="updateArrangeInfo" parameterType="com.swpu.coursesystem.entity.ArrangeInfo">
+        UPDATE arrangeInfo SET teacherId=#{teacherId},teachClassId=#{teachClassId},practiceContent=#{practiceContent},
+        practiceCourseNum=#{practiceCourseNum},arrangeDate=#{arrangeDate} where arrangeId=#{arrangeId}
+    </update>
+</mapper>

@@ -19,6 +19,7 @@
     <delete id="deleteArrangeByTeacherId" parameterType="java.lang.String">
         DELETE FROM arrangeInfo WHERE teacherId=#{teacherId}
     </delete>
+
     <select id="getArrangeInfoByRandom" resultMap="ArrangeInfoResultMap">
         select * from arrangeInfo
         <where>

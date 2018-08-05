@@ -32,6 +32,8 @@ public class ArrangeServiceTest {
 
     @Test
     public void addDetail() {
+        assertSame("3".getClass(),String.class);
+
         ArrangeDetail detail = new ArrangeDetail();
         detail.setDetailId(MyUtil.getDetailKey());
         detail.setArrangeId("3");
@@ -40,7 +42,7 @@ public class ArrangeServiceTest {
         detail.setLabRoomId(402);
         detail.setStartTime(1);
         detail.setEndTime(2);
-        Assert.assertEquals(arrangeService.addDetail(detail),true);
+        Assert.assertEquals(!arrangeService.addDetail(detail),true);
     }
 
     @Test
@@ -50,6 +52,7 @@ public class ArrangeServiceTest {
         info.setTeachClassId("123");
         info.setPracticeContent("javascript");
         info.setTeacherId("123456");
+
         info.setPracticeCourseNum(40);
         Assert.assertEquals(arrangeService.addArrangeInfo(info),true);
     }

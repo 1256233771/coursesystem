@@ -56,7 +56,13 @@
         SELECT * FROM teachClass WHERE teacherId=#{teacherId}
     </select>
     <select id="getTeachClassByTeacherIdAndCourseId" resultMap="TeachClassResultMap" parameterType="java.lang.String">
-        select * from teachClass where teacherId=#{param1} and courseId=#{param2}
+        select * from teachClass where 1=1
+        <if test="param1!=null">
+            and teacherId=#{param1}
+        </if>
+        <if test="param2!=null">
+            and courseId=#{param2}
+        </if>
     </select>
     <select id="getTeachClassByTeacherIdAndMajorId" resultMap="TeachClassResultMap" parameterType="java.lang.String">
         select * from teachClass where teacherId=#{param1} and majorId=#{param2}

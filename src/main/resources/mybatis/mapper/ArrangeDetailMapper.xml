@@ -19,20 +19,38 @@
         <result column="practiceCourseNum" property="practiceCourseNum"/>
         <result column="arrangeDate" property="arrangeDate"/>
     </resultMap>
-    <select id="getArrangeDetailByRandom" resultMap="DetailResultMap">
-        select * from arrangeDetail
+    <resultMap id="RandomDetailResult" type="com.swpu.coursesystem.DTO.RandomDetailResult">
+        <id column="detailId" property="detailId" />
+        <result column="arrangeId" property="arrangeId"/>
+        <result column="labRoomId" property="labRoomId"/>
+        <result column="week" property="week"/>
+        <result column="day" property="day"/>
+        <result column="startTime" property="startTime"/>
+        <result column="endTime" property="endTime"/>
+        <result column="detailDate" property="detailDate"/>
+        <result column="teacherName" property="teacherName"/>
+        <result column="courseName" property="courseName"/>
+    </resultMap>
+    <select id="getArrangeDetailByRandom" resultMap="RandomDetailResult">
+        SELECT  arrangeDetail.detailId,arrangeDetail.arrangeId,arrangeDetail.labRoomId,arrangeDetail.week,arrangeDetail.day,arrangeDetail.startTime,arrangeDetail.endTime,
+        teacher.teacherName,course.courseName FROM arrangeDetail INNER JOIN arrangeInfo ON arrangeDetail.arrangeId=arrangeInfo.arrangeId INNER JOIN teacher
+        ON arrangeInfo.teacherId=teacher.teacherId INNER JOIN teachClass ON arrangeInfo.teachClassId=teachClass.classId INNER JOIN course
+        ON course.courseId=teachClass.courseId
         <where>
             <if test="param1!=null">
-                and arrangeId=#{param1}
+                and arrangeDetail.arrangeId=#{param1}
             </if>
             <if test="param2!=null">
-                and labRoomId=#{param2}
+                and arrangeDetail.labRoomId=#{param2}
             </if>
             <if test="param3!=null">
-                and detailDate&gt;=#{param3}
+                and arrangeDetail.detailDate&gt;=#{param3}
             </if>
             <if test="param4!=null">
-                and detailDate&lt;=#{param4}
+                and arrangeDetail.detailDate&lt;=#{param4}
+            </if>
+            <if test="param5!=null">
+                and teachClass.classId=#{param5}
             </if>
         </where>
     </select>
